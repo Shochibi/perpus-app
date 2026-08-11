@@ -2,24 +2,33 @@
 require_once __DIR__ . "/../config/koneksi.php";
 require_once __DIR__ . "/../config/app.php";
 if (session_status() !== PHP_SESSION_ACTIVE) session_start();
-if (isset($_SESSION["id_user"])) redirect($_SESSION["role"] === "admin" ? "admin/dashboard.php" : "user/dashboard.php");
 $error = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $fullname = trim($_POST["fullname"] ?? "");
     $username = trim($_POST["username"] ?? "");
     $password = $_POST["password"] ?? "";
-    $stmt = mysqli_prepare($koneksi, "SELECT * FROM tbl_user WHERE username=? LIMIT 1");
-    mysqli_stmt_bind_param($stmt, "s", $username);
-    mysqli_stmt_execute($stmt);
-    $user = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
-    mysqli_stmt_close($stmt);
-    if ($user && password_verify($password, $user["password"])) {
-        session_regenerate_id(true);
-        $_SESSION["id_user"] = (int)$user["id_user"];
-        $_SESSION["fullname"] = $user["fullname"];
-        $_SESSION["role"] = $user["role"];
-        redirect($user["role"] === "admin" ? "admin/dashboard.php" : "user/dashboard.php");
+    $confirm = $_POST["confirm"] ?? "";
+    if ($password !== $confirm) {
+        $error = "Konfirmasi password tidak cocok.";
+    } elseif (strlen($password) < 6) {
+        $error = "Password minimal 6 karakter.";
+    } else {
+        $stmt = mysqli_prepare($koneksi, "SELECT id_user FROM tbl_user WHERE username=?");
+        mysqli_stmt_bind_param($stmt, "s", $username);
+        mysqli_stmt_execute($stmt);
+        $exists = mysqli_stmt_get_result($stmt)->num_rows;
+        mysqli_stmt_close($stmt);
+        if ($exists) {
+            $error = "Username sudah digunakan.";
+        } else {
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+            $stmt = mysqli_prepare($koneksi, "INSERT INTO tbl_user(fullname,username,password,role,tanggal_daftar) VALUES(?,?,?,'user',CURDATE())");
+            mysqli_stmt_bind_param($stmt, "sss", $fullname, $username, $hash);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
+            redirect("auth/login.php");
+        }
     }
-    $error = "Username atau password salah.";
 }
 ?>
 <!doctype html>
@@ -27,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <head>
     <meta charset="utf-8">
-    <title>Login</title>
+    <title>Daftar</title>
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
@@ -38,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="logo">
                 <img src="https://cdn-icons-png.flaticon.com/512/2232/2232688.png" alt="Logo perpustakaan">
             </div>
-            <h2>PERPUSTAKAAN</h2>
+            <h2>DAFTAR</h2>
             <p>SMK TARUNA BANGSA</p>
 
             <?php if ($error): ?>
@@ -48,8 +57,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <form method="post" class="auth-form">
                 <div class="input-group">
                     <div class="input-box">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" name="fullname" placeholder="Masukkan Nama Lengkap" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-box">
                         <i class="fa-solid fa-user-tag"></i>
-                        <input type="text" name="username" placeholder="Masukkan Username" required autofocus>
+                        <input type="text" name="username" placeholder="Masukkan Username" required>
                     </div>
                 </div>
 
@@ -61,17 +77,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
                 </div>
 
+                <div class="input-group">
+                    <div class="password-box">
+                        <i class="fa-solid fa-lock left-icon"></i>
+                        <input type="password" id="confirmPassword" name="confirm" placeholder="Konfirmasi Password" required>
+                    </div>
+                </div>
+
                 <button type="submit">
-                    <i class="fa-solid fa-right-to-bracket"></i>
-                    Login
+                    <i class="fa-solid fa-user-plus"></i>
+                    Daftar
                 </button>
             </form>
 
             <div class="divider">atau</div>
 
             <div class="link">
-                Belum punya akun?
-                <a href="register.php">Daftar</a>
+                Sudah punya akun?
+                <a href="login.php">Login</a>
             </div>
 
             <div class="footer">
@@ -82,9 +105,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <script>
         const password = document.getElementById("password");
+        const confirmPassword = document.getElementById("confirmPassword");
         const toggle = document.getElementById("togglePassword");
 
-        if (password && toggle) {
+        if (toggle && password) {
             toggle.addEventListener("click", function() {
                 if (password.type === "password") {
                     password.type = "text";
@@ -95,6 +119,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     toggle.classList.remove("fa-eye-slash");
                     toggle.classList.add("fa-eye");
                 }
+            });
+        }
+
+        if (confirmPassword && password) {
+            password.addEventListener("input", function() {
+                confirmPassword.setAttribute("data-password", password.value);
             });
         }
     </script>

@@ -1,10 +1,8 @@
 <?php
 $host = "localhost";
 $user = "root";
-$password = "";
-$db_name = "db_perpustakaan";
-
-$koneksi = new mysqli($host, $user, $password, $db_name);
-if ($koneksi->connect_error) {
-	die("koneksi gagal" . $koneksi->connect_error);
-}
+$pass = "";
+$db   = "db_lib";
+$koneksi = mysqli_connect($host, $user, $pass, $db);
+if (!$koneksi) die("Koneksi gagal: " . mysqli_connect_error());
+mysqli_set_charset($koneksi, "utf8mb4");
