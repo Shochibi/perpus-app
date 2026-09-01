@@ -1,9 +1,0 @@
-CREATE DATABASE IF NOT EXISTS db_perpustakaan_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE db_perpustakaan_test;
-CREATE TABLE IF NOT EXISTS tbl_kategori(id_kategori INT AUTO_INCREMENT PRIMARY KEY,nama_kategori VARCHAR(25) NOT NULL UNIQUE) ENGINE=InnoDB;
-CREATE TABLE IF NOT EXISTS tbl_user(id_user INT AUTO_INCREMENT PRIMARY KEY,fullname VARCHAR(100) NOT NULL,username VARCHAR(50) NOT NULL UNIQUE,password VARCHAR(255) NOT NULL,role ENUM('admin','user') NOT NULL DEFAULT 'user',tanggal_daftar DATE NOT NULL) ENGINE=InnoDB;
-CREATE TABLE IF NOT EXISTS tbl_buku(id_buku INT AUTO_INCREMENT PRIMARY KEY,judul VARCHAR(200) NOT NULL,penulis VARCHAR(100) NOT NULL,penerbit VARCHAR(100),deskripsi TEXT,tahun_terbit YEAR,cover_buku VARCHAR(255),file_pdf VARCHAR(255),stok INT NOT NULL DEFAULT 0,id_kategori INT NOT NULL,FOREIGN KEY(id_kategori) REFERENCES tbl_kategori(id_kategori) ON UPDATE CASCADE ON DELETE RESTRICT) ENGINE=InnoDB;
-CREATE TABLE IF NOT EXISTS tbl_peminjaman(id_peminjaman INT AUTO_INCREMENT PRIMARY KEY,id_anggota INT NOT NULL,tanggal_pinjam DATE NOT NULL,tanggal_tenggat DATE NOT NULL,tanggal_kembali DATE NULL,status ENUM('dipinjam','selesai') NOT NULL DEFAULT 'dipinjam',FOREIGN KEY(id_anggota) REFERENCES tbl_user(id_user) ON UPDATE CASCADE ON DELETE RESTRICT) ENGINE=InnoDB;
-CREATE TABLE IF NOT EXISTS tbl_detail_peminjaman(id_detail INT AUTO_INCREMENT PRIMARY KEY,id_peminjaman INT NOT NULL,id_buku INT NOT NULL,jumlah INT NOT NULL DEFAULT 1,FOREIGN KEY(id_peminjaman) REFERENCES tbl_peminjaman(id_peminjaman) ON UPDATE CASCADE ON DELETE RESTRICT,FOREIGN KEY(id_buku) REFERENCES tbl_buku(id_buku) ON UPDATE CASCADE ON DELETE RESTRICT,UNIQUE KEY uk_peminjaman_buku(id_peminjaman,id_buku)) ENGINE=InnoDB;
-INSERT IGNORE INTO tbl_kategori(nama_kategori) VALUES('Fiksi'),('Teknologi'),('Pelajaran'),('Bahasa'),('Umum');
--- Setelah register akun, jadikan admin: UPDATE tbl_user SET role='admin' WHERE username='username_kamu';
