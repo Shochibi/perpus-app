@@ -20,6 +20,7 @@ if (isset($_GET["kembali"])) {
             mysqli_stmt_bind_param($u, "ii", $d["jumlah"], $d["id_buku"]);
             mysqli_stmt_execute($u);
             mysqli_stmt_close($u);
+            log_activity($koneksi, (int)$_SESSION["id_user"], (int)$d["id_buku"], "pengembalian", "Mengembalikan buku untuk peminjaman #" . $id);
         }
         mysqli_stmt_close($stmt);
         $date = date("Y-m-d");

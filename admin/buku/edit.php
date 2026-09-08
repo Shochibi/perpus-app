@@ -96,13 +96,13 @@ if (isset($_POST['edit'])) {
             !empty($buku['cover_buku']) &&
             file_exists(
                 '../../uploads/cover/' .
-                $buku['cover_buku']
+                    $buku['cover_buku']
             )
         ) {
 
             unlink(
                 '../../uploads/cover/' .
-                $buku['cover_buku']
+                    $buku['cover_buku']
             );
         }
     }
@@ -144,13 +144,13 @@ if (isset($_POST['edit'])) {
             !empty($buku['pdf_buku']) &&
             file_exists(
                 '../../uploads/pdf/' .
-                $buku['pdf_buku']
+                    $buku['pdf_buku']
             )
         ) {
 
             unlink(
                 '../../uploads/pdf/' .
-                $buku['pdf_buku']
+                    $buku['pdf_buku']
             );
         }
     }
@@ -187,14 +187,13 @@ if (isset($_POST['edit'])) {
     );
 
     if ($query) {
+        log_activity($koneksi, (int)$_SESSION["id_user"], $id, "ubah_buku", "Mengubah buku: " . $judul);
 
         header("Location: index.php");
         exit;
-
     } else {
 
         echo "Gagal mengupdate buku.";
-
     }
 }
 

@@ -33,6 +33,7 @@ try {
     mysqli_stmt_bind_param($stmt, "i", $idBuku);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
+    log_activity($koneksi, $idUser, $idBuku, "peminjaman", "Meminjam buku sampai " . $tenggat);
     mysqli_commit($koneksi);
     redirect("user/peminjaman/index.php");
 } catch (Throwable $e) {

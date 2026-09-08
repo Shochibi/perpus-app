@@ -25,7 +25,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt = mysqli_prepare($koneksi, "INSERT INTO tbl_user(fullname,username,password,role,tanggal_daftar) VALUES(?,?,?,'user',CURDATE())");
             mysqli_stmt_bind_param($stmt, "sss", $fullname, $username, $hash);
             mysqli_stmt_execute($stmt);
+            $idUser = mysqli_insert_id($koneksi);
             mysqli_stmt_close($stmt);
+            log_activity($koneksi, $idUser, null, "register", "Pengguna mendaftarkan akun dengan username " . $username);
             redirect("auth/login.php");
         }
     }

@@ -36,9 +36,7 @@ $data = mysqli_fetch_assoc($cek);
 
 if ($data['total'] > 0) {
 
-    die(
-        "Buku tidak dapat dihapus karena masih sedang dipinjam."
-    );
+    die("Buku tidak dapat dihapus karena masih sedang dipinjam.");
 }
 
 /*
@@ -58,7 +56,6 @@ if (!$buku) {
 
     header("Location: index.php");
     exit;
-
 }
 
 /*
@@ -71,13 +68,13 @@ if (
     !empty($buku['cover_buku']) &&
     file_exists(
         '../../uploads/cover/' .
-        $buku['cover_buku']
+            $buku['cover_buku']
     )
 ) {
 
     unlink(
         '../../uploads/cover/' .
-        $buku['cover_buku']
+            $buku['cover_buku']
     );
 }
 
@@ -91,13 +88,13 @@ if (
     !empty($buku['pdf_buku']) &&
     file_exists(
         '../../uploads/pdf/' .
-        $buku['pdf_buku']
+            $buku['pdf_buku']
     )
 ) {
 
     unlink(
         '../../uploads/pdf/' .
-        $buku['pdf_buku']
+            $buku['pdf_buku']
     );
 }
 
@@ -106,6 +103,8 @@ if (
 | Hapus database
 |--------------------------------------------------------------------------
 */
+
+log_activity($koneksi, (int)$_SESSION["id_user"], $id, "hapus_buku", "Menghapus buku: " . $buku["judul_buku"]);
 
 mysqli_query(
     $koneksi,

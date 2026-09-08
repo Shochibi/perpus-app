@@ -127,6 +127,8 @@ if (isset($_POST['tambah'])) {
     );
 
     if ($query) {
+        $idBuku = mysqli_insert_id($koneksi);
+        log_activity($koneksi, (int)$_SESSION["id_user"], $idBuku, "tambah_buku", "Menambahkan buku: " . $judul);
 
         header("Location: index.php");
         exit;
