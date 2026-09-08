@@ -20,18 +20,20 @@ if ($idUser) {
 }
 ?>
 <!doctype html>
-<html lang="id">
+<html lang="id" class="detail-document">
 
 <head>
     <meta charset="utf-8">
     <title><?= e($b["judul_buku"]) ?></title>
-    <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css?v=<?= filemtime(__DIR__ . "/../../css/app.css") ?>">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/footer.css?v=<?= filemtime(__DIR__ . "/../../css/footer.css") ?>">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/notification.css">
 </head>
 
-<body>
-    <header class="header"><a href="<?= BASE_URL ?>/user/dashboard.php">📚 Perpustakaan</a>
-        <nav><a href="<?= BASE_URL ?>/user/buku/index.php">Buku</a><a href="<?= BASE_URL ?>/user/peminjaman/index.php">Peminjaman</a></nav>
-    </header>
+<body class="user-page detail-page">
+    <?php render_flash(); ?>
+    <?php include __DIR__ . "/../partials/header.php"; ?>
     <main class="container detail"><img src="<?= BASE_URL ?>/uploads/cover/<?= e($b["cover_buku"]) ?>">
         <section>
             <h1><?= e($b["judul_buku"]) ?></h1>
@@ -50,6 +52,7 @@ if ($idUser) {
             <?php endif; ?>
         </section>
     </main>
+    <?php include __DIR__ . "/../partials/footer.php"; ?>
 </body>
 
 </html>

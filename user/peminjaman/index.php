@@ -15,17 +15,20 @@ $loans = mysqli_stmt_get_result($stmt);
 <head>
     <meta charset="utf-8">
     <title>Peminjaman</title>
-    <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css?v=<?= filemtime(__DIR__ . "/../../css/app.css") ?>">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/footer.css?v=<?= filemtime(__DIR__ . "/../../css/footer.css") ?>">
 </head>
 
-<body class="loan-page">
-    <header class="header"><a class="brand" href="<?= BASE_URL ?>/user/dashboard.php"><span class="brand-mark">📚</span> PERPUS</a>
-        <nav><a href="<?= BASE_URL ?>/user/dashboard.php">Beranda</a><a href="<?= BASE_URL ?>/user/buku/index.php">Buku</a><a class="active" href="<?= BASE_URL ?>/user/peminjaman/index.php">Peminjaman</a><span><?= e($_SESSION["fullname"]) ?></span><a class="logout" href="<?= BASE_URL ?>/auth/logout.php" aria-label="Keluar">↪</a></nav>
-    </header>
-    <main class="container">
-        <form class="loan-search" method="get">
-            <span aria-hidden="true">⌕</span>
-            <input name="q" value="<?= e($q) ?>" placeholder="Cari buku" aria-label="Cari buku">
+<body class="user-page catalog-page">
+    <?php render_flash(); ?>
+    <?php include __DIR__ . "/../partials/header.php"; ?>
+    <main class="catalog-main loan-main">
+        <form class="catalog-search loan-catalog-search" method="get">
+            <label class="catalog-search__field">
+                <span aria-hidden="true">⌕</span>
+                <input name="q" value="<?= e($q) ?>" placeholder="Cari buku..." aria-label="Cari buku">
+            </label>
         </form>
         <section class="loan-grid" aria-label="Daftar peminjaman">
             <?php if (mysqli_num_rows($loans) === 0): ?>
@@ -52,9 +55,7 @@ $loans = mysqli_stmt_get_result($stmt);
             <?php endwhile; ?>
         </section>
     </main>
-    <footer class="footer"><a class="brand" href="<?= BASE_URL ?>/user/dashboard.php"><span class="brand-mark">📚</span> PERPUS</a>
-        <p>© 2026 Perpus Digital</p>
-    </footer>
+    <?php include __DIR__ . "/../partials/footer.php"; ?>
 </body>
 
 </html>

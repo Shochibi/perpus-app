@@ -35,8 +35,10 @@ try {
     mysqli_stmt_close($stmt);
     log_activity($koneksi, $idUser, $idBuku, "peminjaman", "Meminjam buku sampai " . $tenggat);
     mysqli_commit($koneksi);
+    flash("Buku berhasil dipinjam selama 7 hari.");
     redirect("user/peminjaman/index.php");
 } catch (Throwable $e) {
     mysqli_rollback($koneksi);
-    exit(e($e->getMessage()) . "<br><a href='" . BASE_URL . "/user/buku/detail.php?id=$idBuku'>Kembali</a>");
+    flash($e->getMessage(), "error");
+    redirect("user/buku/detail.php?id=$idBuku");
 }

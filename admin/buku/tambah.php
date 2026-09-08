@@ -54,7 +54,7 @@ if (isset($_POST['tambah'])) {
             pathinfo($cover['name'], PATHINFO_EXTENSION)
         );
 
-        $ekstensi_allowed = ['jpg', 'jpeg', 'png', 'webp'];
+        $ekstensi_allowed = ['jpg', 'jpeg', 'png', 'webp', 'avif'];
 
         if (!in_array($ekstensi, $ekstensi_allowed)) {
             die("Format cover tidak diperbolehkan.");
@@ -130,11 +130,14 @@ if (isset($_POST['tambah'])) {
         $idBuku = mysqli_insert_id($koneksi);
         log_activity($koneksi, (int)$_SESSION["id_user"], $idBuku, "tambah_buku", "Menambahkan buku: " . $judul);
 
+        flash("Buku berhasil ditambahkan.");
         header("Location: index.php");
         exit;
     } else {
 
-        echo "Gagal menambahkan buku: " . mysqli_error($koneksi);
+        flash("Gagal menambahkan buku.", "error");
+        header("Location: tambah.php");
+        exit;
     }
 }
 

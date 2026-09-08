@@ -35,8 +35,9 @@ $cek = mysqli_query(
 $data = mysqli_fetch_assoc($cek);
 
 if ($data['total'] > 0) {
-
-    die("Buku tidak dapat dihapus karena masih sedang dipinjam.");
+    flash("Buku tidak dapat dihapus karena masih sedang dipinjam.", "error");
+    header("Location: index.php");
+    exit;
 }
 
 /*
@@ -111,5 +112,6 @@ mysqli_query(
     "DELETE FROM tbl_buku WHERE id_buku = $id"
 );
 
+flash("Buku berhasil dihapus.");
 header("Location: index.php");
 exit;

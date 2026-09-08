@@ -29,8 +29,10 @@ if (isset($_GET["kembali"])) {
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
         mysqli_commit($koneksi);
+        flash("Buku berhasil dikembalikan.");
     } catch (Throwable $e) {
         mysqli_rollback($koneksi);
+        flash("Peminjaman tidak dapat diproses.", "error");
     }
     redirect("admin/peminjaman/index.php");
 }
@@ -45,7 +47,7 @@ $loans = mysqli_query($koneksi, "SELECT p.*,u.fullname,GROUP_CONCAT(b.judul_buku
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css">
 </head>
 
-<body><?php include __DIR__ . "/../partials/sidebar.php"; ?><main class="main">
+<body><?php render_flash(); ?><?php include __DIR__ . "/../partials/sidebar.php"; ?><main class="main">
         <h1>Peminjaman</h1>
         <div class="card">
             <table>

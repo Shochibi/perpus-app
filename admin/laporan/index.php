@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . "/../../middleware/admin.php";
 require_once __DIR__ . "/../../config/koneksi.php";
+ensure_activity_logs($koneksi);
 
 $aktivitasValid = [
     "register",
@@ -66,10 +67,10 @@ $namaAktivitas = [
 <head>
     <meta charset="utf-8">
     <title>Laporan Aktivitas</title>
-    <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css?v=<?= filemtime(__DIR__ . "/../../css/app.css") ?>">
 </head>
 
-<body>
+<body class="report-page">
     <?php include __DIR__ . "/../partials/sidebar.php"; ?>
     <main class="main">
         <div class="report-heading">

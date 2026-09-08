@@ -34,6 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 
 <body class="auth">
+    <?php render_flash(); ?>
     <div class="container">
         <div class="card">
             <div class="logo">

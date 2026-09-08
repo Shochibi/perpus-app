@@ -9,13 +9,14 @@ $books = mysqli_query($koneksi, "SELECT b.*,k.nama_kategori FROM tbl_buku b LEFT
 <head>
     <meta charset="utf-8">
     <title>Perpustakaan</title>
-    <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css?v=<?= filemtime(__DIR__ . "/../css/app.css") ?>">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/footer.css?v=<?= filemtime(__DIR__ . "/../css/footer.css") ?>">
 </head>
 
-<body>
-    <header class="header"><a href="<?= BASE_URL ?>/user/dashboard.php">📚 Perpustakaan</a>
-        <nav><a href="<?= BASE_URL ?>/user/buku/index.php">Buku</a><a href="<?= BASE_URL ?>/user/peminjaman/index.php">Peminjaman Saya</a><span><?= e($_SESSION["fullname"]) ?></span><a href="<?= BASE_URL ?>/auth/logout.php">Logout</a></nav>
-    </header>
+<body class="user-page">
+    <?php render_flash(); ?>
+    <?php include __DIR__ . "/partials/header.php"; ?>
     <main class="container">
         <h1>Temukan Buku</h1>
         <p>Selamat datang, <?= e($_SESSION["fullname"]) ?></p>
@@ -24,6 +25,7 @@ $books = mysqli_query($koneksi, "SELECT b.*,k.nama_kategori FROM tbl_buku b LEFT
                     <p><?= e($b["penulis_buku"]) ?></p><span><?= ((int)$b["stok"] > 0) ? "Tersedia: " . $b["stok"] : "Tidak tersedia" ?></span><a href="<?= BASE_URL ?>/user/buku/detail.php?id=<?= $b["id_buku"] ?>">Detail</a>
                 </article><?php endwhile; ?></div>
     </main>
+    <?php include __DIR__ . "/partials/footer.php"; ?>
 </body>
 
 </html>

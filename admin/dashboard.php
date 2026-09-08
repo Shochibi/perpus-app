@@ -15,7 +15,7 @@ $stock = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COALESCE(SUM(stok),0)
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css">
 </head>
 
-<body><?php include __DIR__ . "/partials/sidebar.php"; ?><main class="main">
+<body><?php render_flash(); ?><?php include __DIR__ . "/partials/sidebar.php"; ?><main class="main">
         <h1>Dashboard Admin</h1>
         <p>Halo, <?= e($_SESSION["fullname"]) ?></p>
         <div class="cards">

@@ -24,6 +24,7 @@ $query = mysqli_query($koneksi, "
 </head>
 
 <body>
+    <?php render_flash(); ?>
 
     <div class="top">
         <h1>Data Buku</h1>
@@ -32,7 +33,7 @@ $query = mysqli_query($koneksi, "
         </a>
     </div>
 
-    <table>
+    <table border="1">
         <thead>
             <tr>
                 <th>No</th>
@@ -59,7 +60,7 @@ $query = mysqli_query($koneksi, "
 
                                 <img
                                     src="../../uploads/cover/<?= htmlspecialchars($buku['cover_buku']); ?>"
-                                    alt="Cover">
+                                    alt="Cover" style="max-width: 100px; max-height: 150px;">
 
                             <?php else: ?>
 

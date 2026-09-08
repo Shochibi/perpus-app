@@ -32,24 +32,24 @@ if (!file_exists($absPath)) exit("File PDF tidak ditemukan di server.");
 <head>
     <meta charset="utf-8">
     <title>Baca: <?= e($b['judul_buku']) ?></title>
-    <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css?v=<?= filemtime(__DIR__ . "/../../css/app.css") ?>">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/footer.css?v=<?= filemtime(__DIR__ . "/../../css/footer.css") ?>">
     <style>
         .reader { width: 100%; }
     </style>
 </head>
 
-<body>
-    <header class="header"><a href="<?= BASE_URL ?>/user/dashboard.php">📚 Perpustakaan</a>
-        <nav><a href="<?= BASE_URL ?>/user/buku/index.php">Buku</a><a href="<?= BASE_URL ?>/user/peminjaman/index.php">Peminjaman</a></nav>
-    </header>
+<body class="user-page">
+    <?php include __DIR__ . "/../partials/header.php"; ?>
     <main class="container">
         <h1><?= e($b['judul_buku']) ?></h1>
         <div class="card reader">
             <embed src="<?= $pdfUrl ?>" type="application/pdf" width="100%" height="800px">
             </embed>
-            <p><a href="<?= $pdfUrl ?>" target="_blank">Buka di tab baru / Unduh</a></p>
         </div>
     </main>
+    <?php include __DIR__ . "/../partials/footer.php"; ?>
 </body>
 
 </html>

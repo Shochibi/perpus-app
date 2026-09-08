@@ -8,5 +8,5 @@
         <a href="<?= BASE_URL ?>/admin/user/index.php">User</a>
         <a href="<?= BASE_URL ?>/admin/peminjaman/index.php">Peminjaman</a>
     </nav>
-    <a class="logout" href="<?= BASE_URL ?>/auth/logout.php">Logout</a>
+    <a class="logout" href="<?= BASE_URL ?>/auth/logout.php" onclick="return confirm('Yakin ingin logout?')">Logout</a>
 </aside>

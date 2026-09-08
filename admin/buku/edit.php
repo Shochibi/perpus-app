@@ -189,11 +189,15 @@ if (isset($_POST['edit'])) {
     if ($query) {
         log_activity($koneksi, (int)$_SESSION["id_user"], $id, "ubah_buku", "Mengubah buku: " . $judul);
 
+        flash("Buku berhasil diperbarui.");
         header("Location: index.php");
         exit;
     } else {
 
-        echo "Gagal mengupdate buku.";
+        flash("Gagal memperbarui buku.", "error");
+        header("Location: edit.php?id=" . $id);
+        exit;
+
     }
 }
 
