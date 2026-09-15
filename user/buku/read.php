@@ -14,13 +14,19 @@ mysqli_stmt_close($stmt);
 if (!$b) exit("Buku tidak ditemukan");
 if (empty($b['pdf_buku'])) exit("File PDF untuk buku ini tidak tersedia. <a href='".BASE_URL."/user/buku/detail.php?id=$id'>Kembali</a>");
 
-$stmt = mysqli_prepare($koneksi, "SELECT COUNT(*) n FROM tbl_detail_peminjaman d JOIN tbl_peminjaman p ON p.id_peminjaman=d.id_peminjaman WHERE p.id_anggota=? AND d.id_buku=? AND p.status='dipinjam'");
-mysqli_stmt_bind_param($stmt, "ii", $idUser, $id);
+// cek status premium user
+$stmt = mysqli_prepare($koneksi, "SELECT is_premium, tanggal_premium_hingga FROM tbl_user WHERE id_user=?");
+mysqli_stmt_bind_param($stmt, "i", $idUser);
 mysqli_stmt_execute($stmt);
-$borrowed = (int)mysqli_fetch_assoc(mysqli_stmt_get_result($stmt))["n"];
+$user = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
 mysqli_stmt_close($stmt);
 
-if (!$borrowed) exit("Kamu belum meminjam buku ini. <a href='".BASE_URL."/user/buku/detail.php?id=$id'>Kembali</a>");
+$isPremium = false;
+if ($user && $user["is_premium"]) {
+    $today = new DateTime("today");
+    $expiryDate = new DateTime($user["tanggal_premium_hingga"]);
+    $isPremium = $today <= $expiryDate;
+}
 
 $pdfUrl = BASE_URL . "/uploads/pdf/" . $b['pdf_buku'];
 $absPath = PDF_DIR . $b['pdf_buku'];
@@ -44,9 +50,21 @@ if (!file_exists($absPath)) exit("File PDF tidak ditemukan di server.");
     <?php include __DIR__ . "/../partials/header.php"; ?>
     <main class="container">
         <h1><?= e($b['judul_buku']) ?></h1>
+        <?php if (!$isPremium): ?>
+            <div class="card" style="background-color: #fff3cd; border: 1px solid #ffc107; padding: 15px; margin-bottom: 20px; border-radius: 5px;">
+                <p style="margin: 0; color: #856404;"><strong>📖 Preview Mode</strong> - Anda melihat 10 halaman pertama sebagai preview. Upgrade ke Premium untuk akses penuh ke semua halaman.</p>
+                <a href="<?= BASE_URL ?>/user/pembayaran/beli_premium.php" style="display: inline-block; margin-top: 10px; padding: 8px 15px; background-color: #ffc107; color: #000; text-decoration: none; border-radius: 3px;">Upgrade ke Premium</a>
+            </div>
+        <?php endif; ?>
         <div class="card reader">
-            <embed src="<?= $pdfUrl ?>" type="application/pdf" width="100%" height="800px">
+            <embed src="<?= $isPremium ? $pdfUrl : $pdfUrl . '#page=1&view=FitH' ?>" type="application/pdf" width="100%" height="800px">
             </embed>
+            <?php if (!$isPremium): ?>
+                <div style="padding: 20px; background-color: #f8f9fa; text-align: center; margin-top: 20px; border-top: 1px solid #dee2e6;">
+                    <p style="color: #666; margin-bottom: 10px;">Halaman yang ditampilkan: 1 - 10 (Preview)</p>
+                    <a href="<?= BASE_URL ?>/user/pembayaran/beli_premium.php" class="button">Beli Premium untuk Akses Penuh</a>
+                </div>
+            <?php endif; ?>
         </div>
     </main>
     <?php include __DIR__ . "/../partials/footer.php"; ?>

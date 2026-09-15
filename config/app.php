@@ -1,6 +1,13 @@
 <?php
 define("BASE_URL", "/perpus-app");
 
+// ===== KONFIGURASI SISTEM PREMIUM =====
+define("PREMIUM_PRICE", 50000);           // Harga premium (Rp)
+define("PREMIUM_DURATION", 30);           // Durasi premium (hari)
+define("PAYMENT_METHOD", "e-wallet");     // Metode pembayaran
+define("ADMIN_EWALLET", "+62-812-3456-7890");  // Nomor E-Wallet Admin untuk penerimaan pembayaran
+define("MAX_PREVIEW_PAGES", 10);          // Batas halaman preview untuk user gratis
+
 define("COVER_DIR", __DIR__ . "/../uploads/cover/");
 define("PDF_DIR", __DIR__ . "/../uploads/pdf/");
 function e($value): string
