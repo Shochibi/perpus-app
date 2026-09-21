@@ -2,7 +2,7 @@
 $currentPath = $_SERVER["PHP_SELF"] ?? "";
 $isHome = basename($currentPath) === "dashboard.php";
 $isBooks = str_contains($currentPath, "/user/buku/");
-$isPembayaran = str_contains($currentPath, "/user/pembayaran/");
+$isLoans = str_contains($currentPath, "/user/peminjaman/");
 ?>
 <header class="header user-header">
 	<a class="user-header__brand" href="<?= BASE_URL ?>/user/dashboard.php">
@@ -12,7 +12,7 @@ $isPembayaran = str_contains($currentPath, "/user/pembayaran/");
 	<nav class="user-header__nav" aria-label="Navigasi utama">
 		<a class="<?= $isHome ? "is-active" : "" ?>" href="<?= BASE_URL ?>/user/dashboard.php">Beranda</a>
 		<a class="<?= $isBooks ? "is-active" : "" ?>" href="<?= BASE_URL ?>/user/buku/index.php">Buku</a>
-		<a class="<?= $isPembayaran ? "is-active" : "" ?>" href="<?= BASE_URL ?>/user/pembayaran/index.php">💎 Premium</a>
+		<a class="<?= $isLoans ? "is-active" : "" ?>" href="<?= BASE_URL ?>/user/peminjaman/index.php">Peminjaman</a>
 	</nav>
 	<div class="user-header__account">
 		<span><?= e($_SESSION["fullname"] ?? "User") ?></span>
