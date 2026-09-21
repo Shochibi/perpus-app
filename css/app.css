@@ -844,6 +844,32 @@ th {
     margin-bottom: 22px;
 }
 
+.report-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.report-download {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 18px;
+    color: #ffffff;
+    background-color: #dc2626;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.report-download:hover {
+    background-color: #b91c1c;
+    transform: translateY(-1px);
+}
+
 .report-heading h1 {
     margin-bottom: 6px;
 }
@@ -900,6 +926,37 @@ th {
     background: #fff;
     color: #334155;
     outline: none;
+}
+
+.period-options {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.period-options legend {
+    margin-right: 3px;
+    color: #475569;
+    font-size: .98rem;
+    font-weight: 600;
+}
+
+.period-options label {
+    color: #64748b;
+    font-size: .86rem;
+    font-weight: 500;
+}
+
+.period-options input {
+    padding: 8px 9px;
+    border: 1px solid #dbe4f0;
+    border-radius: 9px;
+    color: #334155;
+    font: inherit;
 }
 
 .activity-options {
