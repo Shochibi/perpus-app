@@ -1,0 +1,10 @@
+/vendor/
+
+.env
+*.log
+
+/uploads/cover/*
+/uploads/pdf/*
+
+!/uploads/cover/.gitkeep
+!/uploads/pdf/.gitkeep

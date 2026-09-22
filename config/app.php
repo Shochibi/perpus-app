@@ -64,7 +64,7 @@ function get_premium_packages(): array
 
 function e($value): string
 {
-    return htmlspecialchars((string)$value, ENT_QUOTES, "UTF-8");
+	return htmlspecialchars((string)$value, ENT_QUOTES, "UTF-8");
 }
 
 function get_pdf_page_count(string $pdfPath): int
@@ -92,8 +92,8 @@ function get_pdf_page_count(string $pdfPath): int
 
 function redirect(string $path): never
 {
-    header("Location: " . BASE_URL . "/" . ltrim($path, "/"));
-    exit;
+	header("Location: " . BASE_URL . "/" . ltrim($path, "/"));
+	exit;
 }
 
 function ensure_activity_logs(mysqli $koneksi): bool
@@ -165,18 +165,20 @@ function log_activity(mysqli $koneksi, ?int $idUser, ?int $idBuku, string $aktiv
 {
 	if (!ensure_activity_logs($koneksi)) return;
 
-    $stmt = mysqli_prepare($koneksi, "INSERT INTO activity_logs (id_user, id_buku, aktivitas, keterangan) VALUES (?, ?, ?, ?)");
-    if (!$stmt) return;
-    mysqli_stmt_bind_param($stmt, "iiss", $idUser, $idBuku, $aktivitas, $keterangan);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
+	$stmt = mysqli_prepare($koneksi, "INSERT INTO activity_logs (id_user, id_buku, aktivitas, keterangan) VALUES (?, ?, ?, ?)");
+	if (!$stmt) return;
+	mysqli_stmt_bind_param($stmt, "iiss", $idUser, $idBuku, $aktivitas, $keterangan);
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_close($stmt);
 }
 
-function flash(string $message, string $type = "success"): void {
+function flash(string $message, string $type = "success"): void
+{
 	if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 	$_SESSION["flash"] = ["message" => $message, "type" => $type];
 }
-function render_flash(): void {
+function render_flash(): void
+{
 	if (empty($_SESSION["flash"])) return;
 	$flash = $_SESSION["flash"];
 	unset($_SESSION["flash"]);
