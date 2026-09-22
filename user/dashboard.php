@@ -122,6 +122,110 @@ if ($dashboardUser && $dashboardUser["is_premium"] && !empty($dashboardUser["tan
         </section>
     </main>
     <?php include __DIR__ . "/partials/footer.php"; ?>
+    
+<!-- Tombol untuk membuka manual book -->
+<button class="manual-book-btn" id="openManualBook" type="button">
+    <i class="fa-solid fa-book-open"></i>
+    Panduan
+</button>
+
+<!-- Popup Manual Book -->
+<div class="manual-book-overlay" id="manualBookPopup">
+    <div class="manual-book-modal">
+
+        <button class="manual-book-close" id="closeManualBook"
+                type="button" aria-label="Tutup">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="manual-book-header">
+            <span class="manual-book-label">MANUAL BOOK</span>
+            <h2>Panduan Perpustakaan</h2>
+            <p>
+                Selamat datang! Ikuti panduan berikut untuk
+                menggunakan website perpustakaan.
+            </p>
+        </div>
+
+        <div class="manual-book-content">
+
+            <div class="manual-step">
+                <div class="manual-step-number">1</div>
+                <div>
+                    <h3>Jelajahi Koleksi Buku</h3>
+                    <p>
+                        Pilih menu buku untuk melihat koleksi,
+                        mencari judul, dan membaca detail buku.
+                    </p>
+                </div>
+            </div>
+
+            <div class="manual-step">
+                <div class="manual-step-number">2</div>
+                <div>
+                    <h3>Baca Buku</h3>
+                    <p>
+                        Buka detail buku, lalu pilih tombol baca
+                        untuk mulai membaca buku yang tersedia.
+                    </p>
+                </div>
+            </div>
+
+            <div class="manual-step">
+                <div class="manual-step-number">3</div>
+                <div>
+                    <h3>Lanjutkan Membaca</h3>
+                    <p>
+                        Gunakan bagian "Buku terakhir dibaca"
+                        untuk melanjutkan bacaan sebelumnya.
+                    </p>
+                </div>
+            </div>
+
+            <div class="manual-step">
+                <div class="manual-step-number">4</div>
+                <div>
+                    <h3>Baca Buku</h3>
+                    <p>
+                        Buka detail buku, lalu pilih tombol baca
+                        untuk mulai membaca buku yang tersedia.
+                    </p>
+                </div>
+            </div>
+
+            <div class="manual-step">
+                <div class="manual-step-number">5</div>
+                <div>
+                    <h3>Lanjutkan Membaca</h3>
+                    <p>
+                        Gunakan bagian "Buku terakhir dibaca"
+                        untuk melanjutkan bacaan sebelumnya.
+                    </p>
+                </div>
+            </div>
+
+            <div class="manual-step">
+                <div class="manual-step-number">6</div>
+                <div>
+                    <h3>Gunakan Fitur Premium</h3>
+                    <p>
+                        Jika tersedia, kamu dapat melihat informasi
+                        premium untuk mengetahui fasilitas tambahan.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="manual-book-footer">
+            <button type="button" id="finishManualBook">
+                Mengerti, mulai membaca
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+
+    </div>
+</div>
     <?php if (count($sliderSlides) > 1): ?>
         <script>
             const slides = [...document.querySelectorAll(".dashboard-slide")];
@@ -137,6 +241,48 @@ if ($dashboardUser && $dashboardUser["is_premium"] && !empty($dashboardUser["tan
             dots.forEach((dot, dotIndex) => dot.addEventListener("click", () => showSlide(dotIndex)));
             setInterval(() => showSlide(activeSlide + 1), 6000);
         </script>
+        
+<script>
+    const manualPopup = document.getElementById("manualBookPopup");
+    const openManual = document.getElementById("openManualBook");
+    const closeManual = document.getElementById("closeManualBook");
+    const finishManual = document.getElementById("finishManualBook");
+
+    function showManualBook() {
+        manualPopup.classList.add("active");
+    }
+
+    function hideManualBook() {
+        manualPopup.classList.remove("active");
+    }
+
+    // Otomatis muncul satu kali per sesi tab
+    if (!sessionStorage.getItem("manualBookShown")) {
+        showManualBook();
+        sessionStorage.setItem("manualBookShown", "true");
+    }
+
+    // Tombol untuk membuka kembali
+    openManual.addEventListener("click", showManualBook);
+
+    // Tombol tutup
+    closeManual.addEventListener("click", hideManualBook);
+    finishManual.addEventListener("click", hideManualBook);
+
+    // Tutup jika klik area luar popup
+    manualPopup.addEventListener("click", function (event) {
+        if (event.target === manualPopup) {
+            hideManualBook();
+        }
+    });
+
+    // Tutup dengan tombol Escape
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            hideManualBook();
+        }
+    });
+</script>
     <?php endif; ?>
 </body>
 

@@ -115,7 +115,6 @@ $namaAktivitas = [
                     Download PDF
                 </a>
             </div>
-            <div class="report-total"><strong><?= $total ?></strong><span>Aktivitas</span></div>
         </div>
 
         <div class="card report-card">

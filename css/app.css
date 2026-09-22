@@ -2475,3 +2475,235 @@ th {
         flex-basis: calc((100% - 12px) / 2);
     }
 }
+
+
+/* =========================
+   MANUAL BOOK POPUP
+========================= */
+
+.manual-book-btn {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 20px;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #8f8e8f);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(75, 0, 130, 0.3);
+    transition: 0.25s ease;
+}
+
+.manual-book-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(75, 0, 130, 0.4);
+}
+
+/* Overlay */
+
+.manual-book-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(20, 10, 35, 0.65);
+    backdrop-filter: blur(5px);
+}
+
+.manual-book-overlay.active {
+    display: flex;
+}
+
+/* Modal */
+
+.manual-book-modal {
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
+    animation: manualBookEnter 0.3s ease;
+}
+
+@keyframes manualBookEnter {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Close */
+
+.manual-book-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(249, 247, 247, 0.758);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.manual-book-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Header */
+
+.manual-book-header {
+    padding: 35px 30px 30px;
+    text-align: center;
+    color: rgb(5, 5, 5);
+    background: linear-gradient(135deg, #d8d8d8);
+    border-radius: 24px 24px 0 0;
+}
+
+.manual-book-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 15px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.18);
+    font-size: 30px;
+}
+
+.manual-book-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    opacity: 0.8;
+}
+
+.manual-book-header h2 {
+    margin: 10px 0;
+    font-size: 26px;
+}
+
+.manual-book-header p {
+    max-width: 400px;
+    margin: auto;
+    font-size: 13px;
+    line-height: 1.7;
+    opacity: 0.9;
+}
+
+/* Content */
+
+.manual-book-content {
+    padding: 25px 30px 10px;
+}
+
+.manual-step {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 23px;
+}
+
+.manual-step-number {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    background: #f1e6ff;
+    color: #7B2CBF;
+    font-weight: 700;
+}
+
+.manual-step h3 {
+    margin: 2px 0 6px;
+    color: #292039;
+    font-size: 15px;
+}
+
+.manual-step p {
+    margin: 0;
+    color: #777181;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* Footer */
+
+.manual-book-footer {
+    padding: 10px 30px 30px;
+}
+
+.manual-book-footer button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #bbbbbb);
+    color: rgb(6, 6, 6);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.manual-book-footer button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* Responsive */
+
+@media (max-width: 500px) {
+    .manual-book-modal {
+        max-height: 92vh;
+        border-radius: 20px;
+    }
+
+    .manual-book-header {
+        padding: 30px 20px 25px;
+    }
+
+    .manual-book-header h2 {
+        font-size: 22px;
+    }
+
+    .manual-book-content {
+        padding: 22px 20px 5px;
+    }
+
+    .manual-book-footer {
+        padding: 10px 20px 22px;
+    }
+
+    .manual-book-btn {
+        right: 15px;
+        bottom: 15px;
+    }
+}
