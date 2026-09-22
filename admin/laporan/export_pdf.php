@@ -17,8 +17,7 @@ $aktivitasValid = [
     "register",
     "login",
     "logout",
-    "peminjaman",
-    "pengembalian",
+    "membaca_buku",
     "tambah_buku",
     "ubah_buku",
     "hapus_buku",
@@ -28,8 +27,7 @@ $namaAktivitas = [
     "register" => "Register",
     "login" => "Login",
     "logout" => "Logout",
-    "peminjaman" => "Peminjaman",
-    "pengembalian" => "Pengembalian",
+    "membaca_buku" => "Membaca buku",
     "tambah_buku" => "Tambah buku",
     "ubah_buku" => "Ubah buku",
     "hapus_buku" => "Hapus buku",
@@ -514,17 +512,7 @@ ob_start();
 
             <?php foreach ($logs as $index => $log): ?>
                 <?php
-                if ($log["aktivitas"] === "peminjaman") {
-                    $keterangan =
-                        "Meminjam buku "
-                        . ($log["judul_buku"] ?? "Buku dihapus");
-                } elseif ($log["aktivitas"] === "pengembalian") {
-                    $keterangan =
-                        "Mengembalikan buku "
-                        . ($log["judul_buku"] ?? "Buku dihapus");
-                } else {
-                    $keterangan = $log["keterangan"] ?? "-";
-                }
+                $keterangan = $log["keterangan"] ?? "-";
                 ?>
 
                 <tr>

@@ -31,7 +31,7 @@ if (isset($_POST['tambah'])) {
 
     $tahun = (int) $_POST['tahun_terbit'];
 
-    $stok = (int) $_POST['stok'];
+    $stok = 0;
 
     $deskripsi = mysqli_real_escape_string(
         $koneksi,
@@ -150,15 +150,25 @@ if (isset($_POST['tambah'])) {
 
     <meta charset="UTF-8">
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Tambah Buku</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/admin-buku.css">
 
 </head>
 
 <body>
 
-    <h1>Tambah Buku</h1>
+    <?php include __DIR__ . "/../partials/sidebar.php"; ?>
+    <main class="main book-admin">
+    <header class="book-admin__top"><div><h1>Tambah Buku</h1><p>Lengkapi informasi dan unggah file buku digital.</p></div><a class="book-admin__button" href="index.php"><i class="fa-solid fa-arrow-left"></i> Kembali</a></header>
+    <div class="book-form-layout">
 
     <form
+        class="book-admin-form"
         action=""
         method="POST"
         enctype="multipart/form-data">
@@ -254,23 +264,6 @@ if (isset($_POST['tambah'])) {
 
         <div>
 
-            <label>Stok</label>
-
-            <br>
-
-            <input
-                type="number"
-                name="stok"
-                min="0"
-                value="1"
-                required>
-
-        </div>
-
-        <br>
-
-        <div>
-
             <label>Deskripsi</label>
 
             <br>
@@ -314,7 +307,7 @@ if (isset($_POST['tambah'])) {
 
         <br>
 
-        <button
+        <div class="book-form-actions"><button
             type="submit"
             name="tambah">
 
@@ -324,9 +317,13 @@ if (isset($_POST['tambah'])) {
 
         <a href="index.php">
             Batal
-        </a>
+        </a></div>
 
     </form>
+
+    <aside class="book-form-help"><h3><i class="fa-regular fa-lightbulb"></i> Panduan</h3><ul><li>Gunakan cover vertikal agar tampil rapi.</li><li>Format cover: JPG, PNG, WebP, atau AVIF.</li><li>Unggah satu file PDF lengkap untuk dibaca user.</li><li>Pastikan judul dan penulis sudah benar.</li></ul></aside>
+    </div>
+    </main>
 
 </body>
 

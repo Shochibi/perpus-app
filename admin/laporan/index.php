@@ -7,8 +7,7 @@ $aktivitasValid = [
     "register",
     "login",
     "logout",
-    "peminjaman",
-    "pengembalian",
+    "membaca_buku",
     "tambah_buku",
     "ubah_buku",
     "hapus_buku",
@@ -79,8 +78,7 @@ $namaAktivitas = [
     "register" => "Register",
     "login" => "Login",
     "logout" => "Logout",
-    "peminjaman" => "Peminjaman",
-    "pengembalian" => "Pengembalian",
+    "membaca_buku" => "Membaca buku",
     "tambah_buku" => "Tambah buku",
     "ubah_buku" => "Ubah buku",
     "hapus_buku" => "Hapus buku",
@@ -115,7 +113,6 @@ $namaAktivitas = [
                     Download PDF
                 </a>
             </div>
-            <div class="report-total"><strong><?= $total ?></strong><span>Aktivitas</span></div>
         </div>
 
         <div class="card report-card">
@@ -165,13 +162,7 @@ $namaAktivitas = [
                                 <td><?= e($log["nama_user"] ?? "User dihapus") ?><small class="report-role"><?= e(ucfirst($log["role_user"] ?? "-")) ?></small></td>
                                 <td><span class="activity-badge activity-<?= e($log["aktivitas"]) ?>"><?= e($namaAktivitas[$log["aktivitas"]] ?? $log["aktivitas"]) ?></span></td>
                                 <td>
-                                    <?php if ($log["aktivitas"] === "peminjaman"): ?>
-                                        Meminjam buku <strong><?= e($log["judul_buku"] ?? "Buku dihapus") ?></strong>
-                                    <?php elseif ($log["aktivitas"] === "pengembalian"): ?>
-                                        Mengembalikan buku <strong><?= e($log["judul_buku"] ?? "Buku dihapus") ?></strong>
-                                    <?php else: ?>
-                                        <?= e($log["keterangan"] ?? "-") ?>
-                                    <?php endif; ?>
+                                    <?= e($log["keterangan"] ?? "-") ?>
                                 </td>
                             </tr>
                         <?php endwhile; ?>

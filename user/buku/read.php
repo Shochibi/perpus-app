@@ -1,55 +1,16 @@
 <?php
-require_once __DIR__ . "/../../middleware/user.php";
-require_once __DIR__ . "/../../config/koneksi.php";
-
-$id = (int)($_GET['id'] ?? 0);
-$idUser = (int)$_SESSION['id_user'];
-
-$stmt = mysqli_prepare($koneksi, "SELECT * FROM tbl_buku WHERE id_buku=?");
-mysqli_stmt_bind_param($stmt, "i", $id);
-mysqli_stmt_execute($stmt);
-$b = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
-mysqli_stmt_close($stmt);
-
-if (!$b) exit("Buku tidak ditemukan");
-if (empty($b['pdf_buku'])) exit("File PDF untuk buku ini tidak tersedia. <a href='".BASE_URL."/user/buku/detail.php?id=$id'>Kembali</a>");
-
-$stmt = mysqli_prepare($koneksi, "SELECT COUNT(*) n FROM tbl_detail_peminjaman d JOIN tbl_peminjaman p ON p.id_peminjaman=d.id_peminjaman WHERE p.id_anggota=? AND d.id_buku=? AND p.status='dipinjam'");
-mysqli_stmt_bind_param($stmt, "ii", $idUser, $id);
-mysqli_stmt_execute($stmt);
-$borrowed = (int)mysqli_fetch_assoc(mysqli_stmt_get_result($stmt))["n"];
-mysqli_stmt_close($stmt);
-
-if (!$borrowed) exit("Kamu belum meminjam buku ini. <a href='".BASE_URL."/user/buku/detail.php?id=$id'>Kembali</a>");
-
-$pdfUrl = BASE_URL . "/uploads/pdf/" . $b['pdf_buku'];
-$absPath = PDF_DIR . $b['pdf_buku'];
-if (!file_exists($absPath)) exit("File PDF tidak ditemukan di server.");
-?>
-<!doctype html>
-<html lang="id">
-
-<head>
-    <meta charset="utf-8">
-    <title>Baca: <?= e($b['judul_buku']) ?></title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css?v=<?= filemtime(__DIR__ . "/../../css/app.css") ?>">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/css/footer.css?v=<?= filemtime(__DIR__ . "/../../css/footer.css") ?>">
-    <style>
-        .reader { width: 100%; }
-    </style>
-</head>
-
-<body class="user-page">
-    <?php include __DIR__ . "/../partials/header.php"; ?>
-    <main class="container">
-        <h1><?= e($b['judul_buku']) ?></h1>
-        <div class="card reader">
-            <embed src="<?= $pdfUrl ?>" type="application/pdf" width="100%" height="800px">
-            </embed>
-        </div>
-    </main>
-    <?php include __DIR__ . "/../partials/footer.php"; ?>
-</body>
-
-</html>
+require_once __DIR__."/../../middleware/user.php";require_once __DIR__."/../../config/koneksi.php";
+$id=(int)($_GET["id"]??0);$u=(int)$_SESSION["id_user"];
+$s=mysqli_prepare($koneksi,"SELECT id_buku,judul_buku,pdf_buku FROM tbl_buku WHERE id_buku=?");mysqli_stmt_bind_param($s,"i",$id);mysqli_stmt_execute($s);$b=mysqli_fetch_assoc(mysqli_stmt_get_result($s));mysqli_stmt_close($s);
+if(!$b||empty($b["pdf_buku"])||!is_file(PDF_DIR.$b["pdf_buku"]))exit("PDF tidak tersedia.");
+$s=mysqli_prepare($koneksi,"SELECT halaman_terakhir FROM reading_progress WHERE id_user=? AND id_buku=?");mysqli_stmt_bind_param($s,"ii",$u,$id);mysqli_stmt_execute($s);$p=mysqli_fetch_assoc(mysqli_stmt_get_result($s));mysqli_stmt_close($s);$awal=max(1,(int)($p["halaman_terakhir"]??1));
+log_activity($koneksi,$u,$id,"membaca_buku","Membaca buku: ".$b["judul_buku"]);
+?><!doctype html><html lang="id"><head><meta charset="utf-8"><title>Baca: <?= e($b["judul_buku"]) ?></title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css"><style>.pdf-reader{max-width:950px;margin:auto}.reader-toolbar{position:sticky;top:0;z-index:2;display:flex;justify-content:center;align-items:center;gap:12px;background:#17385f;color:#fff;padding:12px;border-radius:8px}.reader-toolbar button{padding:8px 14px}.canvas-wrap{text-align:center;background:#525659;padding:20px;min-height:600px}#pdf-canvas{max-width:100%;height:auto;background:#fff}.save-info{font-size:12px}</style></head><body class="user-page"><?php include __DIR__."/../partials/header.php";?><main class="container pdf-reader"><h1><?= e($b["judul_buku"]) ?></h1><div class="reader-toolbar"><button id="prev">Sebelumnya</button><span>Halaman <b id="num"></b> / <b id="count"></b></span><button id="next">Berikutnya</button><span class="save-info" id="info">Tersimpan otomatis</span></div><div class="canvas-wrap"><canvas id="pdf-canvas"></canvas></div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script>
+pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+const url=<?= json_encode(BASE_URL."/uploads/pdf/".$b["pdf_buku"]) ?>,bookId=<?= $id ?>;let pdf,page=<?= $awal ?>,busy=false,pending=null,timer;const canvas=document.getElementById('pdf-canvas'),ctx=canvas.getContext('2d');
+function show(n){busy=true;pdf.getPage(n).then(x=>{const base=x.getViewport({scale:1}),scale=Math.min(1.5,(window.innerWidth-60)/base.width),v=x.getViewport({scale});canvas.width=v.width;canvas.height=v.height;return x.render({canvasContext:ctx,viewport:v}).promise}).then(()=>{busy=false;document.getElementById('num').textContent=n;save();if(pending){let x=pending;pending=null;go(x)}})}
+function go(n){if(n<1||n>pdf.numPages)return;page=n;busy?pending=n:show(n)}
+function save(){clearTimeout(timer);timer=setTimeout(()=>fetch('simpan_progress.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id_buku:bookId,halaman:page,total_halaman:pdf.numPages})}).then(()=>document.getElementById('info').textContent='Tersimpan: halaman '+page),400)}
+document.getElementById('prev').onclick=()=>go(page-1);document.getElementById('next').onclick=()=>go(page+1);pdfjsLib.getDocument(url).promise.then(d=>{pdf=d;document.getElementById('count').textContent=d.numPages;if(page>d.numPages)page=1;show(page)});
+</script></body></html>

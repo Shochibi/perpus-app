@@ -22,7 +22,7 @@ $books = mysqli_query($koneksi, "SELECT b.*,k.nama_kategori FROM tbl_buku b LEFT
         <p>Selamat datang, <?= e($_SESSION["fullname"]) ?></p>
         <div class="grid"><?php while ($b = mysqli_fetch_assoc($books)): ?><article class="book"><img src="<?= BASE_URL ?>/uploads/cover/<?= e($b["cover_buku"]) ?>">
                     <h3><?= e($b["judul_buku"]) ?></h3>
-                    <p><?= e($b["penulis_buku"]) ?></p><span><?= ((int)$b["stok"] > 0) ? "Tersedia: " . $b["stok"] : "Tidak tersedia" ?></span><a href="<?= BASE_URL ?>/user/buku/detail.php?id=<?= $b["id_buku"] ?>">Detail</a>
+                    <p><?= e($b["penulis_buku"]) ?></p><span><?= !empty($b["pdf_buku"]) ? "Siap dibaca" : "PDF belum tersedia" ?></span><a href="<?= BASE_URL ?>/user/buku/detail.php?id=<?= $b["id_buku"] ?>">Detail</a>
                 </article><?php endwhile; ?></div>
     </main>
     <?php include __DIR__ . "/partials/footer.php"; ?>

@@ -44,7 +44,7 @@ if (isset($_POST['edit'])) {
 
     $tahun = (int) $_POST['tahun_terbit'];
 
-    $stok = (int) $_POST['stok'];
+    $stok = (int) $buku['stok'];
 
     $deskripsi = mysqli_real_escape_string(
         $koneksi,
@@ -210,15 +210,25 @@ if (isset($_POST['edit'])) {
 
     <meta charset="UTF-8">
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Edit Buku</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/admin-buku.css">
 
 </head>
 
 <body>
 
-    <h1>Edit Buku</h1>
+    <?php include __DIR__ . "/../partials/sidebar.php"; ?>
+    <main class="main book-admin">
+    <header class="book-admin__top"><div><h1>Edit Buku</h1><p>Perbarui informasi dan file buku digital.</p></div><a class="book-admin__button" href="index.php"><i class="fa-solid fa-arrow-left"></i> Kembali</a></header>
+    <div class="book-form-layout">
 
     <form
+        class="book-admin-form"
         method="POST"
         enctype="multipart/form-data">
 
@@ -298,20 +308,6 @@ if (isset($_POST['edit'])) {
         <br><br>
 
 
-        <label>Stok</label>
-
-        <br>
-
-        <input
-            type="number"
-            name="stok"
-            min="0"
-            value="<?= $buku['stok']; ?>"
-            required>
-
-        <br><br>
-
-
         <label>Deskripsi</label>
 
         <br>
@@ -337,7 +333,7 @@ if (isset($_POST['edit'])) {
 
         <?php if (!empty($buku['cover_buku'])): ?>
 
-            <img
+            <img class="book-form-preview"
                 src="../../uploads/cover/<?= htmlspecialchars($buku['cover_buku']); ?>"
                 width="100">
 
@@ -372,7 +368,7 @@ if (isset($_POST['edit'])) {
         <br><br>
 
 
-        <button
+        <div class="book-form-actions"><button
             type="submit"
             name="edit">
 
@@ -382,9 +378,13 @@ if (isset($_POST['edit'])) {
 
         <a href="index.php">
             Batal
-        </a>
+        </a></div>
 
     </form>
+
+    <aside class="book-form-help"><h3><i class="fa-regular fa-lightbulb"></i> Catatan</h3><p>Biarkan input cover atau PDF kosong jika file lama tidak ingin diganti.</p><ul><li>Periksa kembali metadata buku.</li><li>PDF baru akan menggantikan PDF lama.</li><li>Progress pembaca tetap tersimpan.</li></ul></aside>
+    </div>
+    </main>
 
 </body>
 

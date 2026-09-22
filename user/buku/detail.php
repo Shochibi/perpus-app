@@ -8,16 +8,11 @@ mysqli_stmt_execute($stmt);
 $b = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
 mysqli_stmt_close($stmt);
 if (!$b) exit("Buku tidak ditemukan");
-// cek apakah user sedang meminjam buku ini
-$borrowed = 0;
 $idUser = (int)($_SESSION["id_user"] ?? 0);
-if ($idUser) {
-    $stmt = mysqli_prepare($koneksi, "SELECT COUNT(*) n FROM tbl_detail_peminjaman d JOIN tbl_peminjaman p ON p.id_peminjaman=d.id_peminjaman WHERE p.id_anggota=? AND d.id_buku=? AND p.status='dipinjam'");
-    mysqli_stmt_bind_param($stmt, "ii", $idUser, $id);
-    mysqli_stmt_execute($stmt);
-    $borrowed = (int)mysqli_fetch_assoc(mysqli_stmt_get_result($stmt))["n"];
-    mysqli_stmt_close($stmt);
-}
+$stmt = mysqli_prepare($koneksi, "SELECT f.id_buku, rp.halaman_terakhir, rp.total_halaman FROM tbl_buku b LEFT JOIN tbl_favorit f ON f.id_buku=b.id_buku AND f.id_user=? LEFT JOIN reading_progress rp ON rp.id_buku=b.id_buku AND rp.id_user=? WHERE b.id_buku=?");
+mysqli_stmt_bind_param($stmt, "iii", $idUser, $idUser, $id); mysqli_stmt_execute($stmt);
+$state = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt)) ?: []; mysqli_stmt_close($stmt);
+$isFavorite = !empty($state["id_buku"]);
 ?>
 <!doctype html>
 <html lang="id" class="detail-document">
@@ -39,17 +34,15 @@ if ($idUser) {
             <h1><?= e($b["judul_buku"]) ?></h1>
             <p>Penulis: <?= e($b["penulis_buku"]) ?></p>
             <p>Kategori: <?= e($b["nama_kategori"] ?? "-") ?></p>
-            <p>Stok: <?= $b["stok"] ?></p>
             <p><?= nl2br(e($b["deskripsi"])) ?></p>
-            <?php if ($borrowed > 0): ?>
-                <a class="button" href="<?= BASE_URL ?>/user/buku/read.php?id=<?= $id ?>">Baca Buku</a>
-            <?php else: ?>
-                <?php if ($b["stok"] > 0): ?>
-                    <a class="button" href="<?= BASE_URL ?>/user/peminjaman/pinjam.php?id=<?= $id ?>">Pinjam Buku</a>
-                <?php else: ?>
-                    <b>Tidak tersedia</b>
-                <?php endif; ?>
-            <?php endif; ?>
+            <?php if (!empty($b["pdf_buku"])): ?>
+                <a class="button" href="<?= BASE_URL ?>/user/buku/read.php?id=<?= $id ?>"><?= !empty($state["halaman_terakhir"]) ? "Lanjutkan dari halaman ".(int)$state["halaman_terakhir"] : "Mulai Membaca" ?></a>
+            <?php else: ?><b>PDF belum tersedia.</b><?php endif; ?>
+            <form method="post" action="<?= BASE_URL ?>/user/buku/favorit.php" style="margin-top:12px">
+                <input type="hidden" name="id_buku" value="<?= $id ?>">
+                <input type="hidden" name="aksi" value="<?= $isFavorite ? "hapus" : "tambah" ?>">
+                <button class="button" type="submit"><?= $isFavorite ? "Hapus dari Favorit" : "Tambahkan ke Favorit" ?></button>
+            </form>
         </section>
     </main>
     <?php include __DIR__ . "/../partials/footer.php"; ?>
