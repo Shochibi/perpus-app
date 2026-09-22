@@ -56,7 +56,7 @@ define("ADMIN_EWALLET", "+62-812-3456-7890");  // ← Ganti dengan nomor Anda
 
 **Konfigurasi Lain yang Bisa Diubah:**
 ```php
-define("PREMIUM_PRICE", 50000);           // Harga premium (Rp)
+define("PREMIUM_PRICE", 14999);           // Harga premium (Rp)
 define("PREMIUM_DURATION", 30);           // Durasi premium (hari)
 define("PAYMENT_METHOD", "e-wallet");     // Metode pembayaran
 define("MAX_PREVIEW_PAGES", 10);          // Batas halaman preview user gratis
@@ -88,7 +88,7 @@ define("MAX_PREVIEW_PAGES", 10);          // Batas halaman preview user gratis
 
 #### 4. **Beli Premium** (`/user/pembayaran/beli_premium.php`) - **BARU**
 - Form pembelian membership premium
-- Harga: **Rp 50.000** per 30 hari
+- Harga: **Rp 14.999** per 30 hari
 - Fitur yang didapat:
   - ✓ Baca semua buku tanpa batasan
   - ✓ Akses 1000+ buku
@@ -173,7 +173,7 @@ durasi_hari (INT) - Durasi premium (30 hari)
 
 3. **User klik "Upgrade ke Premium"**
    - Masuk ke `/user/pembayaran/beli_premium.php`
-   - Lihat detail paket: **Rp 50.000 / 30 hari**
+   - Lihat detail paket: **Rp 14.999 / 30 hari**
    - Lihat instruksi pembayaran E-Wallet dengan nomor admin
    - Klik "Bayar Sekarang"
    - **Record pembayaran dibuat dengan status "PENDING"** ⚠️
@@ -222,7 +222,7 @@ Nomor E-Wallet Admin: +62-812-3456-7890 (ganti di config/app.php)
 1. Buka aplikasi e-wallet
 2. Pilih "Kirim Uang" / "Transfer"
 3. Masukkan nomor admin: `+62-812-3456-7890`
-4. Nominal: `Rp 50.000`
+4. Nominal: `Rp 14.999`
 5. Catatan: `Premium [Nama User]`
 6. Kirim
 
@@ -267,7 +267,7 @@ if (isset($_GET["approve"])) {
 ### 4. **Konfigurasi (config/app.php)**
 ```php
 define("ADMIN_EWALLET", "+62-812-3456-7890");  // Nomor e-wallet admin
-define("PREMIUM_PRICE", 50000);                 // Harga (Rp)
+define("PREMIUM_PRICE", 14999);                 // Harga (Rp)
 define("PREMIUM_DURATION", 30);                 // Durasi (hari)
 define("PAYMENT_METHOD", "e-wallet");           // Metode
 define("MAX_PREVIEW_PAGES", 10);                // Preview halaman
@@ -307,7 +307,7 @@ define("MAX_PREVIEW_PAGES", 10);                // Preview halaman
    - Default: `+62-812-3456-7890` (hanya contoh)
 
 2. **Harga & Durasi Premium**:
-   - Rp 50.000 per 30 hari (bisa diubah di `config/app.php`)
+   - Rp 14.999 per 30 hari (bisa diubah di `config/app.php`)
    - Edit: `PREMIUM_PRICE` dan `PREMIUM_DURATION`
 
 3. **Status Pembayaran**:

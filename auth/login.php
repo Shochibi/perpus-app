@@ -16,6 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         session_regenerate_id(true);
         $_SESSION["id_user"] = (int)$user["id_user"];
         $_SESSION["fullname"] = $user["fullname"];
+        $_SESSION["username"] = $user["username"];
         $_SESSION["role"] = $user["role"];
         log_activity($koneksi, (int)$user["id_user"], null, "login", "Pengguna berhasil login");
         redirect($user["role"] === "admin" ? "admin/dashboard.php" : "user/dashboard.php");
