@@ -197,7 +197,6 @@ if (isset($_POST['edit'])) {
         flash("Gagal memperbarui buku.", "error");
         header("Location: edit.php?id=" . $id);
         exit;
-
     }
 }
 
@@ -211,181 +210,185 @@ if (isset($_POST['edit'])) {
     <meta charset="UTF-8">
 
     <title>Edit Buku</title>
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css?v=<?= filemtime(__DIR__ . "/../../css/app.css") ?>">
 
 </head>
 
 <body>
+    <?php include __DIR__ . "/../partials/sidebar.php"; ?>
+    <main class="main admin-form-page">
 
-    <h1>Edit Buku</h1>
+        <h1>Edit Buku</h1>
 
-    <form
-        method="POST"
-        enctype="multipart/form-data">
+        <form
+            method="POST"
+            enctype="multipart/form-data">
 
-        <label>Judul Buku</label>
+            <label>Judul Buku</label>
 
-        <br>
+            <br>
 
-        <input
-            type="text"
-            name="judul_buku"
-            value="<?= htmlspecialchars($buku['judul_buku']); ?>"
-            required>
+            <input
+                type="text"
+                name="judul_buku"
+                value="<?= htmlspecialchars($buku['judul_buku']); ?>"
+                required>
 
-        <br><br>
-
-
-        <label>Penulis</label>
-
-        <br>
-
-        <input
-            type="text"
-            name="penulis_buku"
-            value="<?= htmlspecialchars($buku['penulis_buku']); ?>"
-            required>
-
-        <br><br>
+            <br><br>
 
 
-        <label>Penerbit</label>
+            <label>Penulis</label>
 
-        <br>
+            <br>
 
-        <input
-            type="text"
-            name="penerbit_buku"
-            value="<?= htmlspecialchars($buku['penerbit_buku']); ?>">
+            <input
+                type="text"
+                name="penulis_buku"
+                value="<?= htmlspecialchars($buku['penulis_buku']); ?>"
+                required>
 
-        <br><br>
-
-
-        <label>Kategori</label>
-
-        <br>
-
-        <select name="id_kategori" required>
-
-            <?php while ($data = mysqli_fetch_assoc($kategori)): ?>
-
-                <option
-                    value="<?= $data['id_kategori']; ?>"
-                    <?= $data['id_kategori'] == $buku['id_kategori']
-                        ? 'selected'
-                        : ''; ?>>
-
-                    <?= htmlspecialchars($data['nama_kategori']); ?>
-
-                </option>
-
-            <?php endwhile; ?>
-
-        </select>
-
-        <br><br>
+            <br><br>
 
 
-        <label>Tahun Terbit</label>
+            <label>Penerbit</label>
 
-        <br>
+            <br>
 
-        <input
-            type="number"
-            name="tahun_terbit"
-            value="<?= $buku['tahun_terbit']; ?>"
-            required>
+            <input
+                type="text"
+                name="penerbit_buku"
+                value="<?= htmlspecialchars($buku['penerbit_buku']); ?>">
 
-        <br><br>
-
-
-        <label>Stok</label>
-
-        <br>
-
-        <input
-            type="number"
-            name="stok"
-            min="0"
-            value="<?= $buku['stok']; ?>"
-            required>
-
-        <br><br>
+            <br><br>
 
 
-        <label>Deskripsi</label>
+            <label>Kategori</label>
 
-        <br>
+            <br>
 
-        <textarea
-            name="deskripsi"
-            rows="6"
-            cols="50"><?= htmlspecialchars($buku['deskripsi']); ?></textarea>
+            <select name="id_kategori" required>
 
-        <br><br>
+                <?php while ($data = mysqli_fetch_assoc($kategori)): ?>
 
+                    <option
+                        value="<?= $data['id_kategori']; ?>"
+                        <?= $data['id_kategori'] == $buku['id_kategori']
+                            ? 'selected'
+                            : ''; ?>>
 
-        <label>Cover Baru</label>
+                        <?= htmlspecialchars($data['nama_kategori']); ?>
 
-        <br>
+                    </option>
 
-        <input
-            type="file"
-            name="cover_buku"
-            accept="image/*">
+                <?php endwhile; ?>
 
-        <br>
+            </select>
 
-        <?php if (!empty($buku['cover_buku'])): ?>
-
-            <img
-                src="../../uploads/cover/<?= htmlspecialchars($buku['cover_buku']); ?>"
-                width="100">
-
-        <?php endif; ?>
-
-        <br><br>
+            <br><br>
 
 
-        <label>PDF Baru</label>
+            <label>Tahun Terbit</label>
 
-        <br>
+            <br>
 
-        <input
-            type="file"
-            name="pdf_buku"
-            accept="application/pdf">
+            <input
+                type="number"
+                name="tahun_terbit"
+                value="<?= $buku['tahun_terbit']; ?>"
+                required>
 
-        <br>
+            <br><br>
 
-        <?php if (!empty($buku['pdf_buku'])): ?>
 
-            <a
-                href="../../uploads/pdf/<?= htmlspecialchars($buku['pdf_buku']); ?>"
-                target="_blank">
+            <label>Stok</label>
 
-                Lihat PDF sekarang
+            <br>
 
+            <input
+                type="number"
+                name="stok"
+                min="0"
+                value="<?= $buku['stok']; ?>"
+                required>
+
+            <br><br>
+
+
+            <label>Deskripsi</label>
+
+            <br>
+
+            <textarea
+                name="deskripsi"
+                rows="6"
+                cols="50"><?= htmlspecialchars($buku['deskripsi']); ?></textarea>
+
+            <br><br>
+
+
+            <label>Cover Baru</label>
+
+            <br>
+
+            <input
+                type="file"
+                name="cover_buku"
+                accept="image/*">
+
+            <br>
+
+            <?php if (!empty($buku['cover_buku'])): ?>
+
+                <img
+                    src="../../uploads/cover/<?= htmlspecialchars($buku['cover_buku']); ?>"
+                    width="100">
+
+            <?php endif; ?>
+
+            <br><br>
+
+
+            <label>PDF Baru</label>
+
+            <br>
+
+            <input
+                type="file"
+                name="pdf_buku"
+                accept="application/pdf">
+
+            <br>
+
+            <?php if (!empty($buku['pdf_buku'])): ?>
+
+                <a
+                    href="../../uploads/pdf/<?= htmlspecialchars($buku['pdf_buku']); ?>"
+                    target="_blank">
+
+                    Lihat PDF sekarang
+
+                </a>
+
+            <?php endif; ?>
+
+            <br><br>
+
+
+            <button
+                type="submit"
+                name="edit">
+
+                Simpan Perubahan
+
+            </button>
+
+            <a href="index.php">
+                Batal
             </a>
 
-        <?php endif; ?>
+        </form>
 
-        <br><br>
-
-
-        <button
-            type="submit"
-            name="edit">
-
-            Simpan Perubahan
-
-        </button>
-
-        <a href="index.php">
-            Batal
-        </a>
-
-    </form>
-
+    </main>
 </body>
 
 </html>

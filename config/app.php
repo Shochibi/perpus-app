@@ -1,4 +1,4 @@
-     <?php
+<?php
 define("BASE_URL", "/perpus-app");
 
 // ===== KONFIGURASI SISTEM PREMIUM =====

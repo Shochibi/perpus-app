@@ -151,183 +151,187 @@ if (isset($_POST['tambah'])) {
     <meta charset="UTF-8">
 
     <title>Tambah Buku</title>
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css?v=<?= filemtime(__DIR__ . "/../../css/app.css") ?>">
 
 </head>
 
 <body>
+    <?php include __DIR__ . "/../partials/sidebar.php"; ?>
+    <main class="main admin-form-page">
 
-    <h1>Tambah Buku</h1>
+        <h1>Tambah Buku</h1>
 
-    <form
-        action=""
-        method="POST"
-        enctype="multipart/form-data">
+        <form
+            action=""
+            method="POST"
+            enctype="multipart/form-data">
 
-        <div>
+            <div>
 
-            <label>Judul Buku</label>
+                <label>Judul Buku</label>
 
-            <br>
+                <br>
 
-            <input
-                type="text"
-                name="judul_buku"
-                required>
+                <input
+                    type="text"
+                    name="judul_buku"
+                    required>
 
-        </div>
-
-        <br>
-
-        <div>
-
-            <label>Penulis</label>
+            </div>
 
             <br>
 
-            <input
-                type="text"
-                name="penulis_buku"
-                required>
+            <div>
 
-        </div>
+                <label>Penulis</label>
 
-        <br>
+                <br>
 
-        <div>
+                <input
+                    type="text"
+                    name="penulis_buku"
+                    required>
 
-            <label>Penerbit</label>
-
-            <br>
-
-            <input
-                type="text"
-                name="penerbit_buku">
-
-        </div>
-
-        <br>
-
-        <div>
-
-            <label>Kategori</label>
+            </div>
 
             <br>
 
-            <select name="id_kategori" required>
+            <div>
 
-                <option value="">
-                    -- Pilih Kategori --
-                </option>
+                <label>Penerbit</label>
 
-                <?php while ($data = mysqli_fetch_assoc($kategori)): ?>
+                <br>
 
-                    <option value="<?= $data['id_kategori']; ?>">
+                <input
+                    type="text"
+                    name="penerbit_buku">
 
-                        <?= htmlspecialchars($data['nama_kategori']); ?>
+            </div>
 
+            <br>
+
+            <div>
+
+                <label>Kategori</label>
+
+                <br>
+
+                <select name="id_kategori" required>
+
+                    <option value="">
+                        -- Pilih Kategori --
                     </option>
 
-                <?php endwhile; ?>
+                    <?php while ($data = mysqli_fetch_assoc($kategori)): ?>
 
-            </select>
+                        <option value="<?= $data['id_kategori']; ?>">
 
-        </div>
+                            <?= htmlspecialchars($data['nama_kategori']); ?>
 
-        <br>
+                        </option>
 
-        <div>
+                    <?php endwhile; ?>
 
-            <label>Tahun Terbit</label>
+                </select>
 
-            <br>
-
-            <input
-                type="number"
-                name="tahun_terbit"
-                min="1900"
-                max="<?= date('Y'); ?>"
-                required>
-
-        </div>
-
-        <br>
-
-        <div>
-
-            <label>Stok</label>
+            </div>
 
             <br>
 
-            <input
-                type="number"
-                name="stok"
-                min="0"
-                value="1"
-                required>
+            <div>
 
-        </div>
+                <label>Tahun Terbit</label>
 
-        <br>
+                <br>
 
-        <div>
+                <input
+                    type="number"
+                    name="tahun_terbit"
+                    min="1900"
+                    max="<?= date('Y'); ?>"
+                    required>
 
-            <label>Deskripsi</label>
-
-            <br>
-
-            <textarea
-                name="deskripsi"
-                rows="6"
-                cols="50"></textarea>
-
-        </div>
-
-        <br>
-
-        <div>
-
-            <label>Cover Buku</label>
+            </div>
 
             <br>
 
-            <input
-                type="file"
-                name="cover_buku"
-                accept="image/*">
+            <div>
 
-        </div>
+                <label>Stok</label>
 
-        <br>
+                <br>
 
-        <div>
+                <input
+                    type="number"
+                    name="stok"
+                    min="0"
+                    value="1"
+                    required>
 
-            <label>File PDF Buku</label>
+            </div>
 
             <br>
 
-            <input
-                type="file"
-                name="pdf_buku"
-                accept="application/pdf">
+            <div>
 
-        </div>
+                <label>Deskripsi</label>
 
-        <br>
+                <br>
 
-        <button
-            type="submit"
-            name="tambah">
+                <textarea
+                    name="deskripsi"
+                    rows="6"
+                    cols="50"></textarea>
 
-            Tambah Buku
+            </div>
 
-        </button>
+            <br>
 
-        <a href="index.php">
-            Batal
-        </a>
+            <div>
 
-    </form>
+                <label>Cover Buku</label>
 
+                <br>
+
+                <input
+                    type="file"
+                    name="cover_buku"
+                    accept="image/*">
+
+            </div>
+
+            <br>
+
+            <div>
+
+                <label>File PDF Buku</label>
+
+                <br>
+
+                <input
+                    type="file"
+                    name="pdf_buku"
+                    accept="application/pdf">
+
+            </div>
+
+            <br>
+
+            <button
+                type="submit"
+                name="tambah">
+
+                Tambah Buku
+
+            </button>
+
+            <a href="index.php">
+                Batal
+            </a>
+
+        </form>
+
+    </main>
 </body>
 
 </html>

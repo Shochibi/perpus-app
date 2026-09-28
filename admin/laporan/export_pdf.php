@@ -264,7 +264,7 @@ ob_start();
 
     <style>
         @page {
-            size: A4 potrait;
+            size: A4 portrait;
             margin: 25px 28px 35px;
         }
 
@@ -586,13 +586,13 @@ $html = ob_get_clean();
 */
 
 $options = new Options();
-$options->set("defaultFont", "DejaVu Sans");
+$options->set("Times New Roman", "DejaVu Sans");
 
 $dompdf = new Dompdf($options);
 $dompdf->loadHtml($html, "UTF-8");
 
 // Mengatur kertas A4 landscape
-$dompdf->setPaper("A4", "potrait");
+$dompdf->setPaper("A4", "portrait");
 
 $dompdf->render();
 

@@ -31,64 +31,70 @@ if (!$buku) {
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($buku['judul_buku']); ?></title>
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css?v=<?= filemtime(__DIR__ . "/../../css/app.css") ?>">
 </head>
+
 <body>
-    <h1>
-        <?= htmlspecialchars($buku['judul_buku']); ?>
-    </h1>
-    <?php if (!empty($buku['cover_buku'])): ?>
+    <?php include __DIR__ . "/../partials/sidebar.php"; ?>
+    <main class="main admin-form-page">
+        <h1>
+            <?= htmlspecialchars($buku['judul_buku']); ?>
+        </h1>
+        <?php if (!empty($buku['cover_buku'])): ?>
 
-        <img
-            src="../../uploads/cover/<?= htmlspecialchars($buku['cover_buku']); ?>"
-            width="200">
+            <img
+                src="../../uploads/cover/<?= htmlspecialchars($buku['cover_buku']); ?>"
+                width="200">
 
-    <?php endif; ?>
-    <p>
-        <strong>Penulis:</strong>
-        <?= htmlspecialchars($buku['penulis_buku']); ?>
-    </p>
-    <p>
-        <strong>Penerbit:</strong>
-        <?= htmlspecialchars($buku['penerbit_buku']); ?>
-    </p>
-    <p>
-        <strong>Kategori:</strong>
-        <?= htmlspecialchars($buku['nama_kategori'] ?? '-'); ?>
-    </p>
-    <p>
-        <strong>Tahun Terbit:</strong>
-        <?= htmlspecialchars($buku['tahun_terbit']); ?>
-    </p>
-    <p>
-        <strong>Stok:</strong>
-        <?= htmlspecialchars($buku['stok']); ?>
-    </p>
-    <p>
-        <strong>Deskripsi:</strong>
-    </p>
-    <p>
-        <?= nl2br(htmlspecialchars($buku['deskripsi'])); ?>
-    </p>
-    <?php if (!empty($buku['pdf_buku'])): ?>
+        <?php endif; ?>
         <p>
-            <a
-                href="../../uploads/pdf/<?= htmlspecialchars($buku['pdf_buku']); ?>"
-                target="_blank">
-                📖 Baca Buku
-            </a>
+            <strong>Penulis:</strong>
+            <?= htmlspecialchars($buku['penulis_buku']); ?>
         </p>
-    <?php endif; ?>
-    <br>
-    <a href="edit.php?id=<?= $buku['id_buku']; ?>">
-        Edit
-    </a>
-    |
-    <a href="index.php">
-        Kembali
-    </a>
+        <p>
+            <strong>Penerbit:</strong>
+            <?= htmlspecialchars($buku['penerbit_buku']); ?>
+        </p>
+        <p>
+            <strong>Kategori:</strong>
+            <?= htmlspecialchars($buku['nama_kategori'] ?? '-'); ?>
+        </p>
+        <p>
+            <strong>Tahun Terbit:</strong>
+            <?= htmlspecialchars($buku['tahun_terbit']); ?>
+        </p>
+        <p>
+            <strong>Stok:</strong>
+            <?= htmlspecialchars($buku['stok']); ?>
+        </p>
+        <p>
+            <strong>Deskripsi:</strong>
+        </p>
+        <p>
+            <?= nl2br(htmlspecialchars($buku['deskripsi'])); ?>
+        </p>
+        <?php if (!empty($buku['pdf_buku'])): ?>
+            <p>
+                <a
+                    href="../../uploads/pdf/<?= htmlspecialchars($buku['pdf_buku']); ?>"
+                    target="_blank">
+                    📖 Baca Buku
+                </a>
+            </p>
+        <?php endif; ?>
+        <br>
+        <a href="edit.php?id=<?= $buku['id_buku']; ?>">
+            Edit
+        </a>
+        |
+        <a href="index.php">
+            Kembali
+        </a>
+    </main>
 </body>
 
 </html>
