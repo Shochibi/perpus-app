@@ -31,7 +31,7 @@ if (isset($_POST['tambah'])) {
 
     $tahun = (int) $_POST['tahun_terbit'];
 
-    $stok = (int) $_POST['stok'];
+    $stok = 1;
 
     $deskripsi = mysqli_real_escape_string(
         $koneksi,
@@ -145,193 +145,58 @@ if (isset($_POST['tambah'])) {
 
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-
     <meta charset="UTF-8">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tambah Buku</title>
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css?v=<?= filemtime(__DIR__ . "/../../css/app.css") ?>">
-
 </head>
-
-<body>
+<body class="admin-page">
+    <?php render_flash(); ?>
     <?php include __DIR__ . "/../partials/sidebar.php"; ?>
-    <main class="main admin-form-page">
-
-        <h1>Tambah Buku</h1>
-
-        <form
-            action=""
-            method="POST"
-            enctype="multipart/form-data">
-
-            <div>
-
-                <label>Judul Buku</label>
-
-                <br>
-
-                <input
-                    type="text"
-                    name="judul_buku"
-                    required>
-
+    <main class="main admin-form-page admin-add-book">
+        <div class="admin-page-heading"><div><span class="admin-kicker">MANAJEMEN KOLEKSI / TAMBAH BUKU</span><h1>Tambah buku baru</h1><p>Lengkapi informasi buku agar mudah ditemukan pembaca.</p></div><a class="admin-add-book__back" href="index.php">← Kembali ke daftar</a></div>
+        <form action="" method="POST" enctype="multipart/form-data" id="add-book-form" class="admin-add-book__layout">
+            <div class="admin-add-book__main">
+                <section class="admin-add-book__section"><div class="admin-add-book__section-head"><span>01</span><div><h2>Informasi buku</h2><p>Data utama yang akan tampil di katalog.</p></div></div>
+                    <div class="admin-add-book__fields">
+                        <div class="admin-add-book__field admin-add-book__full"><label for="judul_buku">Judul buku <em>*</em></label><input id="judul_buku" type="text" name="judul_buku" required placeholder="Contoh: Bumi Manusia"></div>
+                        <div class="admin-add-book__field"><label for="penulis_buku">Penulis <em>*</em></label><input id="penulis_buku" type="text" name="penulis_buku" required placeholder="Nama penulis"></div>
+                        <div class="admin-add-book__field"><label for="penerbit_buku">Penerbit</label><input id="penerbit_buku" type="text" name="penerbit_buku" placeholder="Nama penerbit"></div>
+                        <div class="admin-add-book__field"><label for="id_kategori">Kategori <em>*</em></label><select id="id_kategori" name="id_kategori" required><option value="">Pilih kategori</option><?php while ($data = mysqli_fetch_assoc($kategori)): ?><option value="<?= (int)$data['id_kategori'] ?>"><?= htmlspecialchars($data['nama_kategori']) ?></option><?php endwhile; ?></select></div>
+                        <div class="admin-add-book__field"><label for="tahun_terbit">Tahun terbit <em>*</em></label><input id="tahun_terbit" type="number" name="tahun_terbit" min="1900" max="<?= date('Y') ?>" required placeholder="<?= date('Y') ?>"></div>
+                        <div class="admin-add-book__field admin-add-book__full"><label for="deskripsi">Deskripsi</label><textarea id="deskripsi" name="deskripsi" rows="5" placeholder="Ceritakan isi buku secara singkat..."></textarea></div>
+                    </div>
+                </section>
+                <section class="admin-add-book__section"><div class="admin-add-book__section-head"><span>02</span><div><h2>File buku</h2><p>Tambahkan cover dan berkas bacaan jika tersedia.</p></div></div>
+                    <div class="admin-add-book__fields"><div class="admin-add-book__field"><label for="cover_buku">Cover buku</label><input id="cover_buku" type="file" name="cover_buku" accept="image/jpeg,image/png,image/webp,image/avif"><small>JPG, PNG, WebP, atau AVIF.</small></div><div class="admin-add-book__field"><label for="pdf_buku">File PDF buku</label><input id="pdf_buku" type="file" name="pdf_buku" accept="application/pdf"><small>Unggah file PDF untuk dibaca pengguna.</small></div></div>
+                </section>
             </div>
-
-            <br>
-
-            <div>
-
-                <label>Penulis</label>
-
-                <br>
-
-                <input
-                    type="text"
-                    name="penulis_buku"
-                    required>
-
-            </div>
-
-            <br>
-
-            <div>
-
-                <label>Penerbit</label>
-
-                <br>
-
-                <input
-                    type="text"
-                    name="penerbit_buku">
-
-            </div>
-
-            <br>
-
-            <div>
-
-                <label>Kategori</label>
-
-                <br>
-
-                <select name="id_kategori" required>
-
-                    <option value="">
-                        -- Pilih Kategori --
-                    </option>
-
-                    <?php while ($data = mysqli_fetch_assoc($kategori)): ?>
-
-                        <option value="<?= $data['id_kategori']; ?>">
-
-                            <?= htmlspecialchars($data['nama_kategori']); ?>
-
-                        </option>
-
-                    <?php endwhile; ?>
-
-                </select>
-
-            </div>
-
-            <br>
-
-            <div>
-
-                <label>Tahun Terbit</label>
-
-                <br>
-
-                <input
-                    type="number"
-                    name="tahun_terbit"
-                    min="1900"
-                    max="<?= date('Y'); ?>"
-                    required>
-
-            </div>
-
-            <br>
-
-            <div>
-
-                <label>Stok</label>
-
-                <br>
-
-                <input
-                    type="number"
-                    name="stok"
-                    min="0"
-                    value="1"
-                    required>
-
-            </div>
-
-            <br>
-
-            <div>
-
-                <label>Deskripsi</label>
-
-                <br>
-
-                <textarea
-                    name="deskripsi"
-                    rows="6"
-                    cols="50"></textarea>
-
-            </div>
-
-            <br>
-
-            <div>
-
-                <label>Cover Buku</label>
-
-                <br>
-
-                <input
-                    type="file"
-                    name="cover_buku"
-                    accept="image/*">
-
-            </div>
-
-            <br>
-
-            <div>
-
-                <label>File PDF Buku</label>
-
-                <br>
-
-                <input
-                    type="file"
-                    name="pdf_buku"
-                    accept="application/pdf">
-
-            </div>
-
-            <br>
-
-            <button
-                type="submit"
-                name="tambah">
-
-                Tambah Buku
-
-            </button>
-
-            <a href="index.php">
-                Batal
-            </a>
-
+            <aside class="admin-add-book__side"><section class="admin-add-book__section admin-add-book__preview"><div class="admin-add-book__section-head"><span>▤</span><div><h2>Pratinjau katalog</h2><p>Gambaran kartu buku untuk pembaca.</p></div></div><div class="admin-add-book__mock-cover" id="cover-preview"><span>▤<small>Cover buku</small></span></div><strong id="title-preview">Judul buku akan muncul di sini</strong><p id="author-preview">Nama penulis</p></section>
+                <div class="admin-add-book__actions"><button type="submit" name="tambah">＋ Simpan buku</button><a href="index.php">Batal</a></div>
+            </aside>
         </form>
-
     </main>
+<script>
+(() => {
+    const title = document.getElementById('judul_buku');
+    const author = document.getElementById('penulis_buku');
+    const file = document.getElementById('cover_buku');
+    const cover = document.getElementById('cover-preview');
+    let previewUrl;
+    const update = () => {
+        document.getElementById('title-preview').textContent = title.value.trim() || 'Judul buku akan muncul di sini';
+        document.getElementById('author-preview').textContent = author.value.trim() || 'Nama penulis';
+    };
+    [title, author].forEach(input => input.addEventListener('input', update));
+    file.addEventListener('change', () => {
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        previewUrl = file.files[0] && file.files[0].type.startsWith('image/') ? URL.createObjectURL(file.files[0]) : null;
+        cover.replaceChildren();
+        if (previewUrl) { const img = document.createElement('img'); img.src = previewUrl; img.alt = 'Pratinjau cover buku'; cover.append(img); }
+        else { const label = document.createElement('span'); label.textContent = '▤ Cover buku'; cover.append(label); }
+    });
+})();
+</script>
 </body>
-
 </html>

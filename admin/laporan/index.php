@@ -7,8 +7,10 @@ $aktivitasValid = [
     "register",
     "login",
     "logout",
-    "peminjaman",
-    "pengembalian",
+    "baca",
+    "pembayaran_pending",
+    "pembayaran_approve",
+    "pembayaran_reject",
     "tambah_buku",
     "ubah_buku",
     "hapus_buku",
@@ -38,7 +40,7 @@ if ($tanggalMulai !== "" && $tanggalSelesai !== "" && $tanggalMulai > $tanggalSe
     [$tanggalMulai, $tanggalSelesai] = [$tanggalSelesai, $tanggalMulai];
 }
 
-$conditions = [];
+$conditions = ["(u.role IS NULL OR u.role <> 'admin' OR l.aktivitas NOT IN ('login', 'logout'))", "l.aktivitas NOT IN ('peminjaman', 'pengembalian')"];
 $params = [];
 $types = "";
 if ($role !== "") {
@@ -79,8 +81,10 @@ $namaAktivitas = [
     "register" => "Register",
     "login" => "Login",
     "logout" => "Logout",
-    "peminjaman" => "Peminjaman",
-    "pengembalian" => "Pengembalian",
+    "baca" => "Baca buku",
+    "pembayaran_pending" => "Pembayaran diajukan",
+    "pembayaran_approve" => "Pembayaran disetujui",
+    "pembayaran_reject" => "Pembayaran ditolak",
     "tambah_buku" => "Tambah buku",
     "ubah_buku" => "Ubah buku",
     "hapus_buku" => "Hapus buku",
@@ -164,10 +168,8 @@ $namaAktivitas = [
                                 <td><?= e($log["nama_user"] ?? "User dihapus") ?><small class="report-role"><?= e(ucfirst($log["role_user"] ?? "-")) ?></small></td>
                                 <td><span class="activity-badge activity-<?= e($log["aktivitas"]) ?>"><?= e($namaAktivitas[$log["aktivitas"]] ?? $log["aktivitas"]) ?></span></td>
                                 <td>
-                                    <?php if ($log["aktivitas"] === "peminjaman"): ?>
-                                        Meminjam buku <strong><?= e($log["judul_buku"] ?? "Buku dihapus") ?></strong>
-                                    <?php elseif ($log["aktivitas"] === "pengembalian"): ?>
-                                        Mengembalikan buku <strong><?= e($log["judul_buku"] ?? "Buku dihapus") ?></strong>
+                                    <?php if ($log["aktivitas"] === "baca"): ?>
+                                        Membaca buku <strong><?= e($log["judul_buku"] ?? "Buku dihapus") ?></strong>
                                     <?php else: ?>
                                         <?= e($log["keterangan"] ?? "-") ?>
                                     <?php endif; ?>

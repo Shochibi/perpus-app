@@ -18,7 +18,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $_SESSION["fullname"] = $user["fullname"];
         $_SESSION["username"] = $user["username"];
         $_SESSION["role"] = $user["role"];
-        log_activity($koneksi, (int)$user["id_user"], null, "login", "Pengguna berhasil login");
+        if ($user["role"] !== "admin") {
+            log_activity($koneksi, (int)$user["id_user"], null, "login", "Pengguna berhasil login");
+        }
         redirect($user["role"] === "admin" ? "admin/dashboard.php" : "user/dashboard.php");
     }
     $error = "Username atau password salah.";

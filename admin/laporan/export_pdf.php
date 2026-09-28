@@ -17,8 +17,10 @@ $aktivitasValid = [
     "register",
     "login",
     "logout",
-    "peminjaman",
-    "pengembalian",
+    "baca",
+    "pembayaran_pending",
+    "pembayaran_approve",
+    "pembayaran_reject",
     "tambah_buku",
     "ubah_buku",
     "hapus_buku",
@@ -28,8 +30,10 @@ $namaAktivitas = [
     "register" => "Register",
     "login" => "Login",
     "logout" => "Logout",
-    "peminjaman" => "Peminjaman",
-    "pengembalian" => "Pengembalian",
+    "baca" => "Baca buku",
+    "pembayaran_pending" => "Pembayaran diajukan",
+    "pembayaran_approve" => "Pembayaran disetujui",
+    "pembayaran_reject" => "Pembayaran ditolak",
     "tambah_buku" => "Tambah buku",
     "ubah_buku" => "Ubah buku",
     "hapus_buku" => "Hapus buku",
@@ -86,7 +90,7 @@ if (
 |--------------------------------------------------------------------------
 */
 
-$conditions = [];
+$conditions = ["(u.role IS NULL OR u.role <> 'admin' OR l.aktivitas NOT IN ('login', 'logout'))", "l.aktivitas NOT IN ('peminjaman', 'pengembalian')"];
 $params = [];
 $types = "";
 
@@ -514,14 +518,8 @@ ob_start();
 
             <?php foreach ($logs as $index => $log): ?>
                 <?php
-                if ($log["aktivitas"] === "peminjaman") {
-                    $keterangan =
-                        "Meminjam buku "
-                        . ($log["judul_buku"] ?? "Buku dihapus");
-                } elseif ($log["aktivitas"] === "pengembalian") {
-                    $keterangan =
-                        "Mengembalikan buku "
-                        . ($log["judul_buku"] ?? "Buku dihapus");
+                if ($log["aktivitas"] === "baca") {
+                    $keterangan = "Membaca buku " . ($log["judul_buku"] ?? "Buku dihapus");
                 } else {
                     $keterangan = $log["keterangan"] ?? "-";
                 }

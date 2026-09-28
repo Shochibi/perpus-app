@@ -24,18 +24,19 @@ $query = mysqli_query($koneksi, "
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/app.css?v=<?= filemtime(__DIR__ . "/../../css/app.css") ?>">
 </head>
 
-<body>
+<body class="admin-page">
     <?php render_flash(); ?>
     <?php include __DIR__ . "/../partials/sidebar.php"; ?>
     <main class="main">
 
         <div class="top admin-page-heading">
-            <h1>Data Buku</h1>
+            <div><span class="admin-kicker">MANAJEMEN KOLEKSI</span><h1>Kelola buku</h1><p>Temukan dan perbarui koleksi perpustakaan.</p></div>
             <a href="tambah.php" class="btn btn-tambah">
                 + Tambah Buku
             </a>
         </div>
 
+        <div class="admin-catalog-toolbar"><label for="admin-book-search">Cari buku</label><input id="admin-book-search" type="search" placeholder="Cari judul, penulis, atau kategori…" autocomplete="off"><span id="admin-book-count" aria-live="polite"></span></div>
         <div class="card admin-table-card">
             <table>
                 <thead>
@@ -46,7 +47,6 @@ $query = mysqli_query($koneksi, "
                         <th>Penulis</th>
                         <th>Kategori</th>
                         <th>Tahun</th>
-                        <th>Stok</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -54,7 +54,7 @@ $query = mysqli_query($koneksi, "
                     <?php if (mysqli_num_rows($query) > 0): ?>
                         <?php $no = 1; ?>
                         <?php while ($buku = mysqli_fetch_assoc($query)): ?>
-                            <tr>
+                            <tr class="admin-book-row">
                                 <td>
                                     <?= $no++; ?>
                                 </td>
@@ -74,7 +74,7 @@ $query = mysqli_query($koneksi, "
 
                                 </td>
                                 <td>
-                                    <?= htmlspecialchars($buku['judul_buku']); ?>
+                                    <strong><?= htmlspecialchars($buku['judul_buku']); ?></strong>
                                 </td>
                                 <td>
                                     <?= htmlspecialchars($buku['penulis_buku']); ?>
@@ -84,9 +84,6 @@ $query = mysqli_query($koneksi, "
                                 </td>
                                 <td>
                                     <?= htmlspecialchars($buku['tahun_terbit']); ?>
-                                </td>
-                                <td>
-                                    <?= htmlspecialchars($buku['stok']); ?>
                                 </td>
                                 <td>
                                     <a
@@ -117,7 +114,7 @@ $query = mysqli_query($koneksi, "
                     <?php else: ?>
 
                         <tr>
-                            <td colspan="8" style="text-align:center;">
+                            <td colspan="7" style="text-align:center;">
                                 Belum ada data buku.
                             </td>
 
@@ -129,9 +126,24 @@ $query = mysqli_query($koneksi, "
 
             </table>
         </div>
-
+        <p id="admin-book-empty" class="admin-empty" hidden>Tidak ada buku yang cocok dengan pencarian.</p>
     </main>
 
+<script>
+const search = document.getElementById('admin-book-search');
+const rows = [...document.querySelectorAll('.admin-book-row')];
+const count = document.getElementById('admin-book-count');
+const empty = document.getElementById('admin-book-empty');
+function filterBooks() {
+    const term = search.value.trim().toLocaleLowerCase('id');
+    let visible = 0;
+    rows.forEach(row => { const match = row.textContent.toLocaleLowerCase('id').includes(term); row.hidden = !match; if (match) visible++; });
+    count.textContent = `${visible} dari ${rows.length} buku`;
+    empty.hidden = visible !== 0 || rows.length === 0;
+}
+search.addEventListener('input', filterBooks);
+filterBooks();
+</script>
 </body>
 
 </html>
